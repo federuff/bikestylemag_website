@@ -1,0 +1,57 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrapper bar">
+    <p>© {year} BikeStyle Mag — Design, bicycles, sustainable mobility.</p>
+    <nav aria-label="Useful links">
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/rss.xml">RSS</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-complementary);
+    margin-top: var(--space-8);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-4);
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-surface);
+  }
+
+  nav ul {
+    display: flex;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: var(--color-surface);
+    opacity: 0.8;
+  }
+
+  nav a:hover {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+</style>

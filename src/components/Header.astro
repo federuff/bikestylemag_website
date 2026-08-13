@@ -1,0 +1,92 @@
+---
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/news', label: 'News' },
+  { href: '/about', label: 'About' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="wrapper bar">
+    <a href="/" class="brand">
+      <img src="/images/logo.png" alt="BikeStyle Magazine" />
+    </a>
+    <nav aria-label="Main navigation">
+      <ul>
+        {navItems.map((item) => {
+          const isActive = item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href);
+          return (
+            <li>
+              <a href={item.href} aria-current={isActive ? 'page' : undefined}>{item.label}</a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-3);
+  }
+
+  .brand {
+    display: block;
+    line-height: 0;
+  }
+
+  .brand img {
+    height: 56px;
+    width: auto;
+  }
+
+  nav ul {
+    display: flex;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-ink-muted);
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+
+  nav a[aria-current='page'],
+  nav a:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-accent);
+  }
+
+  @media (max-width: 560px) {
+    .bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .brand img {
+      height: 44px;
+    }
+
+    nav ul {
+      gap: var(--space-3);
+    }
+  }
+</style>

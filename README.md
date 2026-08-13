@@ -1,2 +1,92 @@
-# bikestylemag_website
-website
+# BikeStyle Mag — sito web
+
+Sito editoriale su design e biciclette, costruito con [Astro](https://astro.build) (output
+statico). Repository pubblica dedicata al solo sito, separata da
+[`bikestylemag-idea`](https://github.com/federuff/bikestylemag-idea) (privata), dove vive lo
+scraper Python che raccoglie le news.
+
+## Sviluppo locale
+
+```bash
+npm install
+npm run dev       # http://localhost:4321 — mostra anche le bozze (draft: true)
+npm run build     # build statica in dist/, esclude le bozze
+npm run preview   # serve dist/ localmente per un controllo finale pre-deploy
+```
+
+## Contenuti e flusso bozza → pubblicazione
+
+Ogni articolo è un file Markdown in `src/content/articles/`, con questo frontmatter:
+
+```yaml
+---
+title: "Titolo dell'articolo"
+description: "Riassunto breve, usato anche come meta description SEO"
+pubDate: 2026-08-13
+category: ebike        # luxury | ebike | design | urban_commuter | general
+heroImage: "/images/articles/nome-file.jpg"   # opzionale
+sourceUrl: "https://..."                       # opzionale, news di partenza selezionata
+sourceName: "Nome della fonte"                 # opzionale
+draft: true             # true = bozza, false = pubblicato
+---
+```
+
+- **`draft: true`** (default se il campo è omesso): l'articolo è visibile solo in locale con
+  `npm run dev`, navigando direttamente al suo URL (`/articles/<nome-file-senza-estensione>`).
+  Non compare nell'elenco News, in RSS, nella sitemap, né viene generato come pagina statica
+  nella build di produzione.
+- **`draft: false`**: l'articolo è pubblico — compare in Home, News, RSS e sitemap dopo il
+  prossimo deploy.
+
+Flusso previsto:
+1. Un umano seleziona una news dal Google Sheet dello scraper (repo
+   [`bikestylemag-idea`](https://github.com/federuff/bikestylemag-idea)).
+2. Un agente scrive un articolo a partire da quella news e lo salva come nuovo file Markdown
+   con `draft: true`.
+3. Un umano lo rilegge in locale (`npm run dev`), lo corregge se serve, e cambia `draft` a
+   `false` per pubblicarlo.
+4. Il push sul branch `main` fa partire il deploy automatico.
+
+Un umano può ovviamente anche scrivere e pubblicare un articolo direttamente, senza passare
+dallo scraper: basta creare il file con `draft: false` fin da subito.
+
+Tutta la logica di esclusione delle bozze è centralizzata in `src/lib/articles.ts`
+(`getPublishedArticles()`) — ogni pagina o feed che elenca articoli deve usare questa funzione,
+non `getCollection('articles')` direttamente, altrimenti rischia di mostrare le bozze in
+produzione.
+
+## Deploy
+
+Il sito è pubblicato su GitHub Pages con dominio custom `bikestylemag.com`, via il workflow
+[`.github/workflows/deploy-astro.yml`](.github/workflows/deploy-astro.yml): ogni push su `main`
+builda ed effettua il deploy automaticamente.
+
+**Configurazione una tantum da fare manualmente su GitHub (non automatizzabile da qui):**
+1. Repo → Settings → Pages → Source: impostare su **"GitHub Actions"** (richiede repo pubblica,
+   già soddisfatto).
+2. DNS del dominio `bikestylemag.com`: puntarlo a GitHub Pages (record A verso gli IP di GitHub
+   Pages, o CNAME se si usa un sottodominio) — GitHub mostra le istruzioni esatte in
+   Settings → Pages dopo il primo deploy, insieme allo stato di verifica del dominio.
+
+## Immagini
+
+- **Logo**: `public/images/logo.png`, usato nell'header. Per sostituirlo basta rimpiazzare il
+  file (sfondo trasparente consigliato).
+- **Immagine di apertura Home**: `public/images/hero-placeholder.jpg` (formato 16:9), richiamata
+  in `src/pages/index.astro`. Sostituisci il file con la tua immagine mantenendo lo stesso nome,
+  oppure aggiorna il percorso nel componente.
+- **Immagine di anteprima articolo**: campo `heroImage` nel frontmatter dell'articolo — viene
+  usata sia come copertina nella pagina articolo sia come miniatura nelle card di Home/News.
+  Metti il file in `public/images/articles/` e referenzialo come `/images/articles/nome-file.jpg`.
+- **Immagini nel testo**: nel corpo Markdown dell'articolo si possono inserire immagini con la
+  sintassi standard `![testo alternativo](/images/articles/nome-file.jpg)` — vengono già
+  formattate automaticamente (larghezza piena, angoli arrotondati).
+
+## Struttura
+
+- `src/content/articles/` — articoli (Markdown)
+- `src/content.config.ts` — schema degli articoli (Zod)
+- `src/lib/articles.ts` — filtro bozze/pubblicati, helper categorie
+- `src/layouts/`, `src/components/` — layout e componenti UI
+- `src/pages/` — routing: Home, News, `articles/[slug]`, About, RSS, 404
+- `src/styles/global.css` — font, colori, spaziatura (design tokens)

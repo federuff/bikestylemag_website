@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getPublishedArticles } from '../lib/articles';
+
+const articles = await getPublishedArticles();
+const latest = articles.slice(0, 4);
+---
+
+<BaseLayout
+  title="BikeStyle Mag"
+  description="BikeStyle Mag covers bicycle design and sustainable urban mobility, for anyone who rides with style in the city."
+>
+  <section class="wrapper hero-media-wrap">
+    <div class="hero-banner">
+      <!--
+        Opening image, 16:9 format. Replace public/images/hero-placeholder.jpg
+        with your own image (same filename, or update the path below).
+      -->
+      <img class="hero-media" src="/images/hero-placeholder.jpg" alt="" />
+      <div class="hero-banner-overlay">
+        <p class="eyebrow">Design &amp; Bicycles</p>
+        <h1>The bicycle as a style statement, the city as a place to live better.</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrapper quote-section">
+    <blockquote class="quote">
+      <p>“A bicycle isn't just a way to get around: it's the style statement of those who chose to live the city differently.”</p>
+      <footer>— Marco Ferretti, Editorial Director of BikeStyle Mag</footer>
+    </blockquote>
+  </section>
+
+  <section class="wrapper latest">
+    <div class="section-heading">
+      <h2>Latest articles</h2>
+      <a href="/news">All news →</a>
+    </div>
+    <div class="grid">
+      {latest.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-media-wrap {
+    padding-top: var(--space-5);
+  }
+
+  .hero-banner {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .hero-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .hero-banner-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--space-5);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.32) 45%, rgba(0, 0, 0, 0) 75%);
+  }
+
+  .eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-2);
+  }
+
+  .hero-banner-overlay h1 {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    max-width: 20ch;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .hero-banner-overlay {
+      padding: var(--space-3);
+    }
+
+    .eyebrow {
+      margin-bottom: var(--space-1);
+    }
+
+    .hero-banner-overlay h1 {
+      font-size: 1.25rem;
+      max-width: none;
+    }
+  }
+
+  .quote-section {
+    padding-block: var(--space-6);
+  }
+
+  .quote {
+    margin: 0;
+    max-width: 900px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .quote p {
+    font-family: var(--font-headline);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.375rem, 3vw, 2.25rem);
+    line-height: 1.35;
+    color: var(--color-ink);
+    margin: 0 0 var(--space-3);
+  }
+
+  .quote footer {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-style: normal;
+    color: var(--color-ink-muted);
+  }
+
+  .latest {
+    padding-block: var(--space-5) var(--space-8);
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .section-heading a {
+    font-size: 0.9375rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-4);
+  }
+</style>

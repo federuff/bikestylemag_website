@@ -1,0 +1,126 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategoryBadge from '../../components/CategoryBadge.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('articles', ({ data }) => {
+    return import.meta.env.PROD ? data.draft === false : true;
+  });
+
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, pubDate, updatedDate, category, heroImage, sourceUrl, sourceName, author } = entry.data;
+
+const formattedDate = pubDate.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={title} description={description} image={heroImage} type="article">
+  <article class="wrapper">
+    {entry.data.draft && (
+      <p class="draft-notice">Draft — not visible on the published site.</p>
+    )}
+
+    <header class="article-header">
+      <CategoryBadge category={category} />
+      <h1>{title}</h1>
+      <p class="meta">
+        {author} · <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+        {updatedDate && <> · updated on {updatedDate.toLocaleDateString('en-GB')}</>}
+      </p>
+    </header>
+
+    {heroImage && (
+      <img class="hero-image" src={heroImage} alt={title} />
+    )}
+
+    <div class="content">
+      <Content />
+    </div>
+
+    {sourceUrl && (
+      <p class="source">
+        Original source: <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{sourceName ?? sourceUrl}</a>
+      </p>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .draft-notice {
+    background: var(--color-complementary);
+    color: var(--color-surface);
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: var(--space-3);
+  }
+
+  .article-header {
+    padding-block: var(--space-6) var(--space-3);
+  }
+
+  .article-header h1 {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    margin-top: var(--space-2);
+  }
+
+  .meta {
+    color: var(--color-ink-muted);
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: var(--space-5);
+  }
+
+  .content {
+    padding-bottom: var(--space-5);
+  }
+
+  .content :global(h2) {
+    margin-top: var(--space-5);
+  }
+
+  .content :global(img) {
+    width: 100%;
+    border-radius: 4px;
+    margin-block: var(--space-4);
+  }
+
+  .content :global(figcaption) {
+    font-size: 0.875rem;
+    color: var(--color-ink-muted);
+    margin-top: calc(var(--space-1) * -1);
+    margin-bottom: var(--space-4);
+  }
+
+  .source {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-8);
+    font-size: 0.9375rem;
+    color: var(--color-ink-muted);
+  }
+
+  .source a {
+    color: var(--color-accent);
+  }
+</style>
