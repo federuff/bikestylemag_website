@@ -103,6 +103,11 @@ builda ed effettua il deploy automaticamente.
 - **Immagini nel testo**: nel corpo Markdown dell'articolo si possono inserire immagini con la
   sintassi standard `![testo alternativo](/images/articles/nome-file.jpg)` — vengono già
   formattate automaticamente (larghezza piena, angoli arrotondati).
+- **Generazione con AI (Google Nano Banana)**: lo stile visivo fisso della testata (per
+  copertine e immagini nel corpo) è documentato nella skill `.claude/skills/article-images/`
+  e nel Google Doc "Bike-Style-Mag_Guida-Immagini" in `00_GUIDE BIKE STYLE` su Drive — da
+  seguire per qualsiasi immagine generata per il magazine, per mantenere coerenza tra gli
+  articoli.
 
 ## Struttura
 
