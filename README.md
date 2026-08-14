@@ -63,14 +63,20 @@ Flusso previsto:
 3. Un umano rilegge e corregge il testo direttamente nel Doc, genera l'immagine copiando
    l'"image prompt" su Gemini/AI Studio (Nano Banana), e trascina il risultato nel Doc o
    lo consegna direttamente.
-4. Su richiesta ("pubblica"/"aggiorna"), l'agente rilegge il Doc, ricostruisce il file
-   Markdown con frontmatter in `src/content/articles/` (`draft: true`) e lo committa/pusha.
-   Le immagini non vengono estratte automaticamente dal Doc: vanno fornite a parte e
-   salvate in `public/images/articles/` (vedi sezione "Immagini" sotto).
-5. Un umano rilegge il file nel repo in locale (`npm run dev`) e cambia `draft` a `false`
-   per pubblicarlo.
-6. Il push sul branch `main` fa partire il deploy automatico. Una volta pubblicato,
-   l'articolo può essere archiviato come copia nella cartella Drive `03_Pubblicati`.
+4. A questo punto ci sono due comandi possibili:
+   - **"aggiorna"**: l'agente rilegge il Doc e ricostruisce solo il file Markdown con
+     frontmatter in `src/content/articles/` (`draft: true`), committa/pusha, senza aprire
+     PR — utile se la revisione finale si vuole fare nel repo (`npm run dev`) invece che
+     nel Doc.
+   - **"pubblica"**: presuppone che testo e immagine siano già stati rivisti dall'umano nel
+     Doc. L'agente procede **in autonomia, end-to-end, senza chiedere ulteriore conferma**:
+     rilegge il Doc, salva l'immagine in `public/images/articles/` (vedi sezione
+     "Immagini" sotto), ricostruisce il Markdown con `draft: false`, committa/pusha, apre
+     la PR verso `main` e la mergia. Non serve riconfermare l'apertura/merge della PR ogni
+     volta — è già autorizzato quando arriva il comando "pubblica" dopo la revisione
+     dell'umano nel Doc.
+5. Il push su `main` fa partire il deploy automatico. Una volta pubblicato, l'articolo può
+   essere archiviato come copia nella cartella Drive `03_Pubblicati`.
 
 Un umano può ovviamente anche scrivere e pubblicare un articolo direttamente, senza passare
 dallo scraper o dal Google Doc: basta creare il file con `draft: false` fin da subito.
