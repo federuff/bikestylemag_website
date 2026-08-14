@@ -16,7 +16,17 @@ npm run preview   # serve dist/ localmente per un controllo finale pre-deploy
 
 ## Contenuti e flusso bozza → pubblicazione
 
-Ogni articolo è un file Markdown in `src/content/articles/`, con questo frontmatter:
+Ogni articolo è un file Markdown in `src/content/articles/`.
+
+**Nome del file**: `AAAA-MM-GG-slug-descrittivo.md`, dove `AAAA-MM-GG` è la data di
+realizzazione dell'articolo (di norma coincide con `pubDate`) e `slug-descrittivo` richiama
+il titolo. Esempio: `2026-08-14-amsterdam-cycling-history.md`. Il nome non cambia quando
+l'articolo passa da bozza a pubblicato (è lo stesso file, cambia solo `draft` nel
+frontmatter) — la data nel nome resta quella di realizzazione, non va aggiornata ad ogni
+modifica. Vale la stessa convenzione anche per il nome del Google Doc di bozza in
+`02_Draft_Articoli` e per l'eventuale copia archiviata in `03_Pubblicati` (vedi sotto).
+
+Frontmatter:
 
 ```yaml
 ---
@@ -44,7 +54,10 @@ Flusso previsto:
 2. Un agente scrive la bozza dell'articolo come Google Doc nella cartella Drive
    `02_Draft_Articoli`, con un blocco "Metadati" in testa (slug, description, category,
    sourceUrl, sourceName, pubDate, draft, heroImage) seguito dal corpo con formattazione
-   vera (titoli, grassetti — non simboli Markdown grezzi).
+   vera (titoli, grassetti — non simboli Markdown grezzi). Il campo "slug" nei Metadati
+   è solo la parte descrittiva (es. `amsterdam-cycling-history`, senza data): la data va
+   anteposta automaticamente quando si genera il nome del file, secondo la convenzione
+   sopra.
 3. Un umano rilegge e corregge il testo direttamente nel Doc, e ci trascina dentro le
    immagini che vuole usare.
 4. Su richiesta ("pubblica"/"aggiorna"), l'agente rilegge il Doc, ricostruisce il file
