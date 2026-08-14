@@ -16,7 +16,17 @@ npm run preview   # serve dist/ localmente per un controllo finale pre-deploy
 
 ## Contenuti e flusso bozza → pubblicazione
 
-Ogni articolo è un file Markdown in `src/content/articles/`, con questo frontmatter:
+Ogni articolo è un file Markdown in `src/content/articles/`.
+
+**Nome del file**: `AAAA-MM-GG-slug-descrittivo.md`, dove `AAAA-MM-GG` è la data di
+realizzazione dell'articolo (di norma coincide con `pubDate`) e `slug-descrittivo` richiama
+il titolo. Esempio: `2026-08-14-amsterdam-cycling-history.md`. Il nome non cambia quando
+l'articolo passa da bozza a pubblicato (è lo stesso file, cambia solo `draft` nel
+frontmatter) — la data nel nome resta quella di realizzazione, non va aggiornata ad ogni
+modifica. Vale la stessa convenzione anche per il nome del Google Doc di bozza in
+`02_Draft_Articoli` e per l'eventuale copia archiviata in `03_Pubblicati` (vedi sotto).
+
+Frontmatter:
 
 ```yaml
 ---
@@ -41,14 +51,29 @@ draft: true             # true = bozza, false = pubblicato
 Flusso previsto:
 1. Un umano seleziona una news dal Google Sheet dello scraper (repo
    [`bikestylemag-idea`](https://github.com/federuff/bikestylemag-idea)).
-2. Un agente scrive un articolo a partire da quella news e lo salva come nuovo file Markdown
-   con `draft: true`.
-3. Un umano lo rilegge in locale (`npm run dev`), lo corregge se serve, e cambia `draft` a
-   `false` per pubblicarlo.
-4. Il push sul branch `main` fa partire il deploy automatico.
+2. Un agente scrive la bozza dell'articolo come Google Doc nella cartella Drive
+   `02_Draft_Articoli`, con un blocco "Metadati" in testa (slug, description, category,
+   sourceUrl, sourceName, pubDate, draft, heroImage, **image prompt**) seguito dal corpo
+   con formattazione vera (titoli, grassetti — non simboli Markdown grezzi). Il campo
+   "slug" nei Metadati è solo la parte descrittiva (es. `amsterdam-cycling-history`, senza
+   data): la data va anteposta automaticamente quando si genera il nome del file, secondo
+   la convenzione sopra. Il campo "image prompt" è generato automaticamente dall'agente
+   seguendo la skill `.claude/skills/article-images/` (stile fisso Nano Banana) — pronto
+   da incollare così com'è su Gemini/AI Studio per ottenere l'immagine di copertina.
+3. Un umano rilegge e corregge il testo direttamente nel Doc, genera l'immagine copiando
+   l'"image prompt" su Gemini/AI Studio (Nano Banana), e trascina il risultato nel Doc o
+   lo consegna direttamente.
+4. Su richiesta ("pubblica"/"aggiorna"), l'agente rilegge il Doc, ricostruisce il file
+   Markdown con frontmatter in `src/content/articles/` (`draft: true`) e lo committa/pusha.
+   Le immagini non vengono estratte automaticamente dal Doc: vanno fornite a parte e
+   salvate in `public/images/articles/` (vedi sezione "Immagini" sotto).
+5. Un umano rilegge il file nel repo in locale (`npm run dev`) e cambia `draft` a `false`
+   per pubblicarlo.
+6. Il push sul branch `main` fa partire il deploy automatico. Una volta pubblicato,
+   l'articolo può essere archiviato come copia nella cartella Drive `03_Pubblicati`.
 
 Un umano può ovviamente anche scrivere e pubblicare un articolo direttamente, senza passare
-dallo scraper: basta creare il file con `draft: false` fin da subito.
+dallo scraper o dal Google Doc: basta creare il file con `draft: false` fin da subito.
 
 Tutta la logica di esclusione delle bozze è centralizzata in `src/lib/articles.ts`
 (`getPublishedArticles()`) — ogni pagina o feed che elenca articoli deve usare questa funzione,
@@ -81,6 +106,11 @@ builda ed effettua il deploy automaticamente.
 - **Immagini nel testo**: nel corpo Markdown dell'articolo si possono inserire immagini con la
   sintassi standard `![testo alternativo](/images/articles/nome-file.jpg)` — vengono già
   formattate automaticamente (larghezza piena, angoli arrotondati).
+- **Generazione con AI (Google Nano Banana)**: lo stile visivo fisso della testata (per
+  copertine e immagini nel corpo) è documentato nella skill `.claude/skills/article-images/`
+  e nel Google Doc "Bike-Style-Mag_Guida-Immagini" in `00_GUIDE BIKE STYLE` su Drive — da
+  seguire per qualsiasi immagine generata per il magazine, per mantenere coerenza tra gli
+  articoli.
 
 ## Struttura
 
