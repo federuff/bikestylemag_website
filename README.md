@@ -41,14 +41,23 @@ draft: true             # true = bozza, false = pubblicato
 Flusso previsto:
 1. Un umano seleziona una news dal Google Sheet dello scraper (repo
    [`bikestylemag-idea`](https://github.com/federuff/bikestylemag-idea)).
-2. Un agente scrive un articolo a partire da quella news e lo salva come nuovo file Markdown
-   con `draft: true`.
-3. Un umano lo rilegge in locale (`npm run dev`), lo corregge se serve, e cambia `draft` a
-   `false` per pubblicarlo.
-4. Il push sul branch `main` fa partire il deploy automatico.
+2. Un agente scrive la bozza dell'articolo come Google Doc nella cartella Drive
+   `02_Draft_Articoli`, con un blocco "Metadati" in testa (slug, description, category,
+   sourceUrl, sourceName, pubDate, draft, heroImage) seguito dal corpo con formattazione
+   vera (titoli, grassetti — non simboli Markdown grezzi).
+3. Un umano rilegge e corregge il testo direttamente nel Doc, e ci trascina dentro le
+   immagini che vuole usare.
+4. Su richiesta ("pubblica"/"aggiorna"), l'agente rilegge il Doc, ricostruisce il file
+   Markdown con frontmatter in `src/content/articles/` (`draft: true`) e lo committa/pusha.
+   Le immagini non vengono estratte automaticamente dal Doc: vanno fornite a parte e
+   salvate in `public/images/articles/` (vedi sezione "Immagini" sotto).
+5. Un umano rilegge il file nel repo in locale (`npm run dev`) e cambia `draft` a `false`
+   per pubblicarlo.
+6. Il push sul branch `main` fa partire il deploy automatico. Una volta pubblicato,
+   l'articolo può essere archiviato come copia nella cartella Drive `03_Pubblicati`.
 
 Un umano può ovviamente anche scrivere e pubblicare un articolo direttamente, senza passare
-dallo scraper: basta creare il file con `draft: false` fin da subito.
+dallo scraper o dal Google Doc: basta creare il file con `draft: false` fin da subito.
 
 Tutta la logica di esclusione delle bozze è centralizzata in `src/lib/articles.ts`
 (`getPublishedArticles()`) — ogni pagina o feed che elenca articoli deve usare questa funzione,

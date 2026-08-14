@@ -20,11 +20,13 @@ Pages su questo piano) — separata da [`bikestylemag-idea`](https://github.com/
 - Flusso di pubblicazione articoli: file Markdown in `src/content/articles/`, campo `draft: true/false` per bozza/pubblicato (vedi `README.md` per i dettagli tecnici).
 - **Skill editoriale** (`.claude/skills/editorial-voice/SKILL.md`): distilla la guida di tono/stile della redazione (Google Doc) in istruzioni operative. Si carica automaticamente quando si scrive/rivede un articolo in questo repo — non serve rispiegare il tono ad ogni nuova chat.
 - 4 articoli placeholder pubblicati (uno per categoria) per non lanciare il sito vuoto.
+- **Primo articolo "vero" scritto**: la news sui Paesi Bassi/come Amsterdam è tornata una città per le biciclette (fonte: SpaceDaily). File `src/content/articles/amsterdam-cycling-history.md`, `draft: true`, in attesa di revisione umana.
+- **Flusso bozze via Google Docs** (vedi `README.md`, sezione "Contenuti e flusso bozza → pubblicazione", per i dettagli): le bozze si scrivono ora come Google Doc nella cartella Drive `02_Draft_Articoli`, con blocco "Metadati" + corpo formattato; l'umano rilegge/corregge/aggiunge immagini nel Doc; su richiesta l'agente rilegge il Doc e rigenera il file Markdown nel repo. Cartella `03_Pubblicati` creata come archivio degli articoli usciti. Struttura allineata al playbook interno già scritto dalla redazione su Drive ("Guida Operativa Master: Workflow Editoriale AI"). Il Doc di prova per l'articolo Amsterdam è già in `02_Draft_Articoli`.
 
 **⏳ Non ancora fatto — prossimo passo concreto:**
-- **Nessun articolo "vero" ancora scritto.** Il primo candidato è già stato selezionato e marcato nel Google Sheet dello scraper: la news sui Paesi Bassi/come Amsterdam è tornata una città per le biciclette (URL: `https://spacedaily.com/m-most-people-assume-the-dutch-have-always-cycled-but-in-the-1960s-the-netherlands-was-rebuilding-its-cities-for-cars/`). Manca solo scrivere l'articolo applicando la skill `editorial-voice` e aprire la PR di bozza.
+- Revisione umana della bozza Amsterdam (nel repo o nel Doc Drive corrispondente) e decisione se aprire una PR e/o pubblicarla (`draft: false`).
 
 ## Come si usa da una nuova conversazione
 
-- Per scrivere un articolo: basta chiedere a Claude di scrivere un pezzo su una news (la skill `editorial-voice` si applica da sola, dato che è nel repo). Il flusso previsto è: bozza (`draft: true`) → PR aperta per revisione → `draft: false` + merge per pubblicare.
+- Per scrivere un articolo: basta chiedere a Claude di scrivere un pezzo su una news (la skill `editorial-voice` si applica da sola, dato che è nel repo). Flusso previsto: bozza come Google Doc in `02_Draft_Articoli` su Drive → revisione/immagini nel Doc → su richiesta l'agente rilegge il Doc e crea/aggiorna il file Markdown (`draft: true`) nel repo → revisione finale in locale → `draft: false` + merge per pubblicare.
 - Per problemi di deploy/dominio: vedi `README.md`, sezione Deploy, per i dettagli su Pages/DNS/HTTPS (già tutto configurato e funzionante a oggi).
