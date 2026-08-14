@@ -72,11 +72,12 @@ Flusso previsto:
      Doc. L'agente procede **in autonomia, end-to-end, senza chiedere ulteriore conferma**:
      rilegge il Doc, salva l'immagine in `public/images/articles/` (vedi sezione
      "Immagini" sotto), ricostruisce il Markdown con `draft: false`, committa/pusha, apre
-     la PR verso `main` e la mergia. Non serve riconfermare l'apertura/merge della PR ogni
-     volta — è già autorizzato quando arriva il comando "pubblica" dopo la revisione
-     dell'umano nel Doc.
-5. Il push su `main` fa partire il deploy automatico. Una volta pubblicato, l'articolo può
-   essere archiviato come copia nella cartella Drive `03_Pubblicati`.
+     la PR verso `main`, la mergia, **e sposta il Doc di bozza da `02_Draft_Articoli` a
+     `03_Pubblicati`** (stesso file, non una copia — `02_Draft_Articoli` deve contenere solo
+     bozze ancora in corso). Nessuno di questi passaggi va riconfermato ogni volta — sono
+     già autorizzati quando arriva il comando "pubblica" dopo la revisione dell'umano nel
+     Doc.
+5. Il push su `main` fa partire il deploy automatico.
 
 Un umano può ovviamente anche scrivere e pubblicare un articolo direttamente, senza passare
 dallo scraper o dal Google Doc: basta creare il file con `draft: false` fin da subito.
