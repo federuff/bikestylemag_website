@@ -3,9 +3,10 @@ title: "Amsterdam wasn't born on a bike — it fought its way back onto one"
 description: "Everyone assumes the Dutch have always cycled. In the 1960s, the Netherlands was busy paving over canals for cars — until a protest movement, an oil crisis and a lot of dead children's bikes changed the plan."
 pubDate: 2026-08-14
 category: urban_commuter
+heroImage: "/images/articles/2026-08-14-amsterdam-cycling-history-cover.jpg"
 sourceUrl: "https://spacedaily.com/m-most-people-assume-the-dutch-have-always-cycled-but-in-the-1960s-the-netherlands-was-rebuilding-its-cities-for-cars/"
 sourceName: "SpaceDaily"
-draft: true
+draft: false
 ---
 
 Ask anyone what makes Amsterdam *Amsterdam* and they'll say the canals, the gabled houses, and — obviously — the bikes. As if the Dutch were born with a bell on the handlebar and clogs clipped into the pedals. They weren't. In the 1960s, the Netherlands was doing everything it could to become just another car country.
