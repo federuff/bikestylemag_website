@@ -42,29 +42,21 @@ Questo blocco di stile è fisso e va sempre incluso nel prompt, indipendentement
 dall'articolo. Non va reinterpretato o "migliorato" articolo per articolo — la coerenza
 visiva tra le immagini è il punto.
 
-## Blocco di stile pronto per il prompt (inglese)
-
-I prompt per i modelli immagine funzionano meglio in inglese. Usa questo blocco così com'è,
-in coda alla descrizione del soggetto specifico:
-
-```
-Digital illustration blending European comic-book art (clear line, defined but not heavy
-outlines) with watercolor softness. Soft pastel color palette: warm tones for buildings
-(ochre bricks, faded reds), cool tones for canals and sky (blues, luminous greys). Thin,
-precise linework (light black ink) defining shapes without weighing the drawing down. Light
-watercolor texture, colors softly bleeding past the edges for a fresh, non-rigid feel.
-Natural daytime lighting, soft and clear. Simple, elegant, legible. Horizontal 16:9 format.
-```
+**Regola vincolante**: nel prompt finale, la parte di stile va riportata **parola per
+parola** identica al blocco "Stile fisso (canonico)" qui sopra — stessa lingua (italiano),
+stessa formulazione. Non va tradotta in inglese, non va riassunta, non va riformulata
+"meglio per il modello". Se la guida cambia, si aggiorna qui e da quel momento si usano le
+nuove parole — ma sempre citate alla lettera, mai parafrasate.
 
 ## Come costruire il prompt per un articolo
 
 1. Parti dal titolo e dal tema centrale dell'articolo (non serve leggerlo tutto: il soggetto
    dell'immagine è quasi sempre già nel titolo o nell'attacco).
-2. Scrivi 1-2 frasi in inglese che descrivono la scena specifica: chi/cosa si vede, dove,
-   che azione — niente loghi, marchi, testo nell'immagine o volti di persone reali
-   riconoscibili.
-3. Metti il blocco di stile fisso (sopra) subito dopo la descrizione del soggetto.
-4. Ribadisci sempre il formato 16:9 anche se già presente nel blocco di stile.
+2. Scrivi 1-2 frasi che descrivono la scena specifica: chi/cosa si vede, dove, che azione —
+   niente loghi, marchi, testo nell'immagine o volti di persone reali riconoscibili.
+3. Incolla subito dopo, parola per parola, l'intero blocco "Stile fisso (canonico)" qui
+   sopra (titoli **Stile Artistico**, **Caratteristiche tecniche** con i suoi punti Palette
+   colori/Tratto/Texture/Atmosfera/Formato inclusi).
 
 ### Esempio (articolo "Amsterdam wasn't born on a bike")
 
@@ -73,12 +65,20 @@ A wide cobblestone street in 1970s Amsterdam, canal houses on one side, a handfu
 cyclists riding past parked cars and a canal with reflections of the sky, warm afternoon
 light.
 
-Digital illustration blending European comic-book art (clear line, defined but not heavy
-outlines) with watercolor softness. Soft pastel color palette: warm tones for buildings
-(ochre bricks, faded reds), cool tones for canals and sky (blues, luminous greys). Thin,
-precise linework (light black ink) defining shapes without weighing the drawing down. Light
-watercolor texture, colors softly bleeding past the edges for a fresh, non-rigid feel.
-Natural daytime lighting, soft and clear. Simple, elegant, legible. Horizontal 16:9 format.
+Stile Artistico: Illustrazione digitale che fonde lo stile del fumetto europeo (linea
+chiara, contorni definiti ma non pesanti) con la delicatezza dell'acquerello.
+
+Caratteristiche tecniche:
+- Palette colori: Toni pastello morbidi, con prevalenza di colori caldi per gli edifici
+  (mattoni ocrati, rossi sbiaditi) e toni freddi per i canali e il cielo (azzurri, grigi
+  luminosi).
+- Tratto: Linee di contorno sottili e precise (tipo inchiostro nero leggero), che
+  definiscono le forme senza appesantire il disegno.
+- Texture: Effetto acquerello leggero, con colori che sembrano "sconfinare" appena dai
+  bordi, dando un senso di freschezza e non rigidità.
+- Atmosfera: Luce naturale diurna, soffusa e chiara. Deve risultare semplice, elegante e
+  leggibile.
+- Formato: 16:9 (Orizzontale).
 ```
 
 ## Output e nomi file
