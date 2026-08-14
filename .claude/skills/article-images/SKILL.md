@@ -15,6 +15,12 @@ Image, il modello usato per generare le immagini del magazine. Tutte le immagini
 coerenza visiva al sito indipendentemente da chi genera l'immagine o quale articolo
 rappresenta.
 
+**Automazione scelta (agosto 2026)**: nessuna chiamata API diretta per ora. Ogni volta che
+si scrive la bozza di un articolo come Google Doc in `02_Draft_Articoli`, includi nel
+blocco "Metadati" un campo "image prompt" già pronto (soggetto specifico + blocco di stile
+sotto), costruito seguendo questa guida — così l'umano deve solo copiarlo su Gemini/AI
+Studio, senza doverlo scrivere da zero.
+
 ## Stile fisso (canonico)
 
 **Stile artistico:** Illustrazione digitale che fonde lo stile del fumetto europeo (linea

@@ -53,13 +53,16 @@ Flusso previsto:
    [`bikestylemag-idea`](https://github.com/federuff/bikestylemag-idea)).
 2. Un agente scrive la bozza dell'articolo come Google Doc nella cartella Drive
    `02_Draft_Articoli`, con un blocco "Metadati" in testa (slug, description, category,
-   sourceUrl, sourceName, pubDate, draft, heroImage) seguito dal corpo con formattazione
-   vera (titoli, grassetti — non simboli Markdown grezzi). Il campo "slug" nei Metadati
-   è solo la parte descrittiva (es. `amsterdam-cycling-history`, senza data): la data va
-   anteposta automaticamente quando si genera il nome del file, secondo la convenzione
-   sopra.
-3. Un umano rilegge e corregge il testo direttamente nel Doc, e ci trascina dentro le
-   immagini che vuole usare.
+   sourceUrl, sourceName, pubDate, draft, heroImage, **image prompt**) seguito dal corpo
+   con formattazione vera (titoli, grassetti — non simboli Markdown grezzi). Il campo
+   "slug" nei Metadati è solo la parte descrittiva (es. `amsterdam-cycling-history`, senza
+   data): la data va anteposta automaticamente quando si genera il nome del file, secondo
+   la convenzione sopra. Il campo "image prompt" è generato automaticamente dall'agente
+   seguendo la skill `.claude/skills/article-images/` (stile fisso Nano Banana) — pronto
+   da incollare così com'è su Gemini/AI Studio per ottenere l'immagine di copertina.
+3. Un umano rilegge e corregge il testo direttamente nel Doc, genera l'immagine copiando
+   l'"image prompt" su Gemini/AI Studio (Nano Banana), e trascina il risultato nel Doc o
+   lo consegna direttamente.
 4. Su richiesta ("pubblica"/"aggiorna"), l'agente rilegge il Doc, ricostruisce il file
    Markdown con frontmatter in `src/content/articles/` (`draft: true`) e lo committa/pusha.
    Le immagini non vengono estratte automaticamente dal Doc: vanno fornite a parte e
