@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      article_files:
+        description: 'Test manuale automazione News Feed: percorsi articolo separati da spazio (es. src/content/articles/nome-file.md). Lascia vuoto per il normale comportamento automatico.'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -86,6 +91,12 @@ jobs:
 
       - name: Update News Feed tracker for newly published articles
         run: |
+          MANUAL_FILES="${{ github.event.inputs.article_files }}"
+          if [ -n "$MANUAL_FILES" ]; then
+            echo "Test manuale con file specificati a mano: $MANUAL_FILES"
+            python3 scripts/update_news_tracker.py $MANUAL_FILES
+            exit $?
+          fi
           CHANGED=$(git diff --name-only HEAD^ HEAD -- 'src/content/articles/*.md' 2>/dev/null || true)
           if [ -z "$CHANGED" ]; then
             echo "No article files changed in this push — nothing to do."
