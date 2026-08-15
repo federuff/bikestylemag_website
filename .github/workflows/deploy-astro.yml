@@ -9,10 +9,6 @@ on:
         description: 'Test manuale automazione News Feed: percorsi articolo separati da spazio (es. src/content/articles/nome-file.md). Lascia vuoto per il normale comportamento automatico.'
         required: false
         default: ''
-      run_category_backfill:
-        description: 'Esegue una tantum scripts/backfill_news_feed_categories.py (popola colonna L del News Feed). Scrivi "yes" per eseguirlo, lascia vuoto altrimenti.'
-        required: false
-        default: ''
 
 permissions:
   contents: read
@@ -107,10 +103,3 @@ jobs:
             exit 0
           fi
           python3 scripts/update_news_tracker.py $CHANGED
-
-      # Job una tantum: popola la colonna "new category" del News Feed con la nuova
-      # tassonomia. Rimuovere questo step e scripts/backfill_news_feed_categories.py
-      # una volta eseguito con successo.
-      - name: Run one-off News Feed category backfill
-        if: ${{ github.event.inputs.run_category_backfill == 'yes' }}
-        run: python3 scripts/backfill_news_feed_categories.py
