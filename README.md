@@ -33,13 +33,30 @@ Frontmatter:
 title: "Titolo dell'articolo"
 description: "Riassunto breve, usato anche come meta description SEO"
 pubDate: 2026-08-13
-category: ebike        # luxury | ebike | design | urban_commuter | general
+categories: ["design", "urban-bike"]   # una o più, vedi elenco sotto
 heroImage: "/images/articles/nome-file.jpg"   # opzionale
 sourceUrl: "https://..."                       # opzionale, news di partenza selezionata
 sourceName: "Nome della fonte"                 # opzionale
 draft: true             # true = bozza, false = pubblicato
 ---
 ```
+
+**Categorie**: ogni articolo può avere una o più categorie contemporaneamente (es.
+`["e-bike", "road-bike"]` per una bici da corsa a pedalata assistita). Sono divise in due
+gruppi — l'elenco completo, con slug tecnico ed etichette tradotte IT/EN/ES, vive nel Google
+Sheet **"Bike-Style-Mag_Elenco-Categorie"** in `00_GUIDE BIKE STYLE` su Drive (fonte
+canonica) ed è replicato in `src/content.config.ts` (`BIKE_TYPE_SLUGS`,
+`MACRO_CATEGORY_SLUGS`) — se l'elenco cambia sul foglio, va riallineato anche lì:
+
+- **Tipologia bici**: `urban-bike`, `road-bike`, `mountain-bike`, `gravel`, `cargo-bike`,
+  `folding`, `bmx`, `fixed-gear`.
+- **Categoria macro**: `luxury`, `design`, `culture`, `bicycle`, `e-bike`, `clothing`,
+  `accessories`, `infrastructure`, `travel`, `spots`, `events-awards`, `technology`,
+  `reviews`.
+
+Gli slug sono sempre in inglese (stabili anche se il sito diventa multi-lingua) — le
+etichette mostrate al lettore passano da `categoryLabel()` in `src/lib/articles.ts`, che oggi
+usa sempre l'inglese (`locale: 'en'` di default) in attesa di un routing multi-lingua.
 
 - **`draft: true`** (default se il campo è omesso): l'articolo è visibile solo in locale con
   `npm run dev`, navigando direttamente al suo URL (`/articles/<nome-file-senza-estensione>`).
@@ -52,7 +69,7 @@ Flusso previsto:
 1. Un umano seleziona una news dal Google Sheet dello scraper (repo
    [`bikestylemag-idea`](https://github.com/federuff/bikestylemag-idea)).
 2. Un agente scrive la bozza dell'articolo come Google Doc nella cartella Drive
-   `02_Draft_Articoli`, con un blocco "Metadati" in testa (slug, description, category,
+   `02_Draft_Articoli`, con un blocco "Metadati" in testa (slug, description, categories,
    sourceUrl, sourceName, pubDate, draft, heroImage, **image prompt**) seguito dal corpo
    con formattazione vera (titoli, grassetti — non simboli Markdown grezzi). Il campo
    "slug" nei Metadati è solo la parte descrittiva (es. `amsterdam-cycling-history`, senza

@@ -1,15 +1,16 @@
 ---
-import { categoryLabel } from '../lib/articles';
-import type { Article } from '../lib/articles';
+import { categoryLabel, categoryGroup } from '../lib/articles';
+import type { CategorySlug } from '../lib/articles';
 
 interface Props {
-  category: Article['data']['category'];
+  category: CategorySlug;
 }
 
 const { category } = Astro.props;
+const group = categoryGroup(category);
 ---
 
-<span class:list={['badge', `badge--${category}`]}>{categoryLabel(category)}</span>
+<span class:list={['badge', `badge--${group}`, category === 'luxury' && 'badge--luxury']}>{categoryLabel(category)}</span>
 
 <style>
   .badge {
@@ -25,14 +26,13 @@ const { category } = Astro.props;
     color: var(--color-ink-muted);
   }
 
+  .badge--macro {
+    background: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
+    color: var(--color-accent);
+  }
+
   .badge--luxury {
     background: color-mix(in srgb, var(--color-complementary) 16%, var(--color-surface));
     color: var(--color-complementary);
-  }
-
-  .badge--ebike,
-  .badge--design {
-    background: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
-    color: var(--color-accent);
   }
 </style>

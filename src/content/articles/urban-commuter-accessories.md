@@ -2,7 +2,7 @@
 title: "From bike to desk: stylish accessories for the urban commuter"
 description: "Waterproof bags that look like work bags, locks that blend into the frame, minimal lights: accessories designed for those who ride to the office every day."
 pubDate: 2026-07-29
-category: urban_commuter
+categories: ["accessories", "urban-bike"]
 heroImage: "/images/articles/accessori-urban-commuter-cover.jpg"
 draft: false
 ---
