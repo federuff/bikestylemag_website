@@ -17,6 +17,11 @@ export async function getPublishedArticles(): Promise<Article[]> {
   return all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 
+export async function getArticlesByCategory(category: CategorySlug): Promise<Article[]> {
+  const all = await getPublishedArticles();
+  return all.filter((article) => article.data.categories.includes(category));
+}
+
 // Etichette tradotte IT/EN/ES, in sync a mano con il Google Sheet
 // "Bike-Style-Mag_Elenco-Categorie" in 00_GUIDE BIKE STYLE su Drive. Il sito è oggi
 // solo in inglese: `categoryLabel()` usa "en" di default finché non esiste un routing
