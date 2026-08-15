@@ -2,7 +2,7 @@
 title: "The urban e-bikes redefining city style"
 description: "Minimal design, hidden batteries and thoughtful components: the new generation of urban e-bikes looks more to design than to technology."
 pubDate: 2026-08-06
-category: ebike
+categories: ["e-bike", "design", "urban-bike"]
 heroImage: "/images/articles/ebike-urbano-2026-cover.jpg"
 draft: false
 ---

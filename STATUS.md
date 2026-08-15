@@ -10,7 +10,7 @@ Sito editoriale BikeStyle Mag, Astro, output statico. Repo pubblica (necessario 
 Pages su questo piano) — separata da [`bikestylemag-idea`](https://github.com/federuff/bikestylemag-idea)
 (privata), dove vive lo scraper che raccoglie le news di partenza.
 
-## Stato attuale (14 agosto 2026)
+## Stato attuale (15 agosto 2026)
 
 **✅ Completato e verificato:**
 - Sito live su **`https://bikestylemag.com`**, dominio custom con DNS verificato, HTTPS attivo.
@@ -29,10 +29,13 @@ Pages su questo piano) — separata da [`bikestylemag-idea`](https://github.com/
 - **Guida News Feed**: Google Doc "Bike-Style-Mag_Guida-News-Feed" in `00_GUIDE BIKE STYLE` su Drive — documenta le colonne del foglio "Bike Style Mag - News Feed" (popolato dallo scraper del repo privato `bikestylemag-idea`), l'elenco delle fonti monitorate con relativo peso, e come si sceglie/segnala la prossima notizia da trasformare in articolo. Nessun corrispettivo come skill nel repo: riguarda un processo esterno (lo scraper), non qualcosa che l'agente esegue direttamente in questo repo.
 
 - **Pubblicazione autonoma autorizzata dall'utente (14 agosto 2026)**: quando l'umano ha già rivisto testo e immagine nel Doc di bozza e dice "pubblica", l'agente procede da solo fino in fondo — Markdown con `draft: false`, commit/push, apertura PR verso `main` e merge — senza chiedere ulteriore conferma per la PR/merge. Il comando "aggiorna" resta invece per sincronizzare solo il file nel repo (`draft: true`, niente PR), se si preferisce rivedere in locale. Vedi `README.md`, sezione "Contenuti e flusso bozza → pubblicazione", punto 4.
+- **Nuovo sistema di categorie multi-tag (15 agosto 2026)**: sostituito il vecchio campo singolo `category` (5 valori) con `categories: string[]` — un articolo può avere più categorie insieme (es. `["e-bike", "road-bike"]`). 21 categorie divise in due gruppi (Tipologia bici / Categoria macro), con slug tecnico sempre in inglese ed etichette già tradotte IT/EN/ES pronte per un futuro sito multi-lingua (oggi il sito resta solo in inglese, `categoryLabel()` usa "en" di default). Fonte canonica: Google Sheet **"Bike-Style-Mag_Elenco-Categorie"** in `00_GUIDE BIKE STYLE` su Drive — se cambia lì, va riallineato a mano in `src/content.config.ts`/`src/lib/articles.ts`. Le categorie sono state scelte analizzando la tassonomia usata dalle fonti monitorate dallo scraper (Discerning Cyclist, Cycle EXIF, The Radavist, Dezeen, ecc.). Migrati i 5 articoli esistenti alla nuova struttura; build verificata (`npm run build`, 0 errori).
 
 **⏳ Non ancora fatto — prossimo passo concreto:**
 - Nessun articolo in coda al momento — prossimo passo è selezionare la prossima news dal Google Sheet dello scraper.
+- **Pagine per categoria** (es. `/news/ebike` con tutti gli articoli di quella categoria): proposta discussa ma non ancora costruita, in attesa che l'utente dia il via libera.
 - Se in futuro si vorrà una vera automazione via API Gemini per le immagini (nessuna azione richiesta finché non viene chiesto esplicitamente): servirà una chiave API con billing abilitato, una decisione su dove custodirla e sul trigger (script manuale, GitHub Action, o nello scraper `bikestylemag-idea`).
+- **Automazione News Feed** (chiudere il loop: segnare in automatico nel foglio quando una notizia diventa articolo): piano pronto (script Python + GitHub Action), in pausa finché l'utente non crea un service account Google Cloud con accesso a Sheets API.
 
 ## Come si usa da una nuova conversazione
 

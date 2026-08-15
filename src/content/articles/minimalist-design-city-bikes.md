@@ -2,7 +2,7 @@
 title: "When the bicycle becomes a design object: minimal city bikes"
 description: "Clean frames, a single colour, components stripped to the essentials: the minimal city bike is becoming a genre of its own in contemporary design."
 pubDate: 2026-08-04
-category: design
+categories: ["design", "urban-bike"]
 heroImage: "/images/articles/city-bike-design-minimale-cover.jpg"
 draft: false
 ---

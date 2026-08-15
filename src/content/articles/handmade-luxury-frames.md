@@ -2,7 +2,7 @@
 title: "Handmade frames: inside the ateliers of Italy's artisan builders"
 description: "Hand-brazed steel, months-long waiting lists, one single craftsman per frame: in cycling, luxury is still measured in hours of manual work."
 pubDate: 2026-08-01
-category: luxury
+categories: ["luxury"]
 heroImage: "/images/articles/bici-artigianale-luxury-cover.jpg"
 draft: false
 ---
