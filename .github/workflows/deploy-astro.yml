@@ -56,10 +56,26 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     continue-on-error: true
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+
+      # Autenticazione senza chiavi JSON (Workload Identity Federation): questa
+      # organizzazione Google Cloud blocca la creazione di chiavi service account
+      # (policy iam.managed.disableServiceAccountKeyCreation). Se i secret non sono
+      # ancora configurati, questo step fallisce silenziosamente grazie a
+      # continue-on-error a livello di job — lo step successivo si limita a loggare
+      # che l'automazione non è attiva (vedi scripts/update_news_tracker.py).
+      - name: Authenticate to Google Cloud
+        if: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER != '' }}
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT_EMAIL }}
 
       - uses: actions/setup-python@v5
         with:
@@ -69,8 +85,6 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Update News Feed tracker for newly published articles
-        env:
-          GOOGLE_SHEETS_CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_JSON }}
         run: |
           CHANGED=$(git diff --name-only HEAD^ HEAD -- 'src/content/articles/*.md' 2>/dev/null || true)
           if [ -z "$CHANGED" ]; then

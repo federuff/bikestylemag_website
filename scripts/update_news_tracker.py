@@ -5,12 +5,14 @@ articolo" della riga con lo stesso sourceUrl.
 
 Uso: python3 scripts/update_news_tracker.py <path/to/article1.md> [<path/to/article2.md> ...]
 
-Passo opzionale e "dormiente": se manca la variabile d'ambiente
-GOOGLE_SHEETS_CREDENTIALS_JSON (chiave service account in JSON), lo script esce senza
-errori e senza fare nulla — vedi STATUS.md per come attivarlo. Idempotente: non
-sovrascrive una riga già marcata come pubblicata.
+Passo opzionale e "dormiente": usa le Application Default Credentials di Google
+(google.auth.default()) — in CI arrivano da Workload Identity Federation (step
+`google-github-actions/auth` nel workflow, nessuna chiave JSON scaricabile: questa
+organizzazione Google Cloud blocca la creazione di chiavi service account), in locale
+da `gcloud auth application-default login`. Se le credenziali non sono disponibili, lo
+script esce senza errori e senza fare nulla — vedi STATUS.md per come attivarlo.
+Idempotente: non sovrascrive una riga già marcata come pubblicata.
 """
-import json
 import os
 import re
 import sys
@@ -69,26 +71,25 @@ def main() -> int:
         print("No newly published articles with a sourceUrl in this push — nothing to do.")
         return 0
 
-    credentials_json = os.environ.get("GOOGLE_SHEETS_CREDENTIALS_JSON")
-    if not credentials_json:
+    try:
+        import google.auth
+        from googleapiclient.discovery import build
+    except ImportError:
+        print("google-api-python-client/google-auth not installed — skipping.", file=sys.stderr)
+        return 0
+
+    try:
+        credentials, _ = google.auth.default(
+            scopes=["https://www.googleapis.com/auth/spreadsheets"]
+        )
+    except Exception as exc:  # noqa: BLE001 - qualsiasi errore di credenziali è "non attivo ancora"
         print(
-            "GOOGLE_SHEETS_CREDENTIALS_JSON is not set — News Feed update skipped "
+            f"No Google Cloud credentials available ({exc}) — News Feed update skipped "
             "(optional step, see STATUS.md to activate it)."
         )
         return 0
 
-    try:
-        from google.oauth2 import service_account
-        from googleapiclient.discovery import build
-    except ImportError:
-        print("google-api-python-client not installed — skipping.", file=sys.stderr)
-        return 0
-
     sheet_id = os.environ.get("NEWS_TRACKER_SHEET_ID", DEFAULT_SHEET_ID)
-    credentials = service_account.Credentials.from_service_account_info(
-        json.loads(credentials_json),
-        scopes=["https://www.googleapis.com/auth/spreadsheets"],
-    )
     service = build("sheets", "v4", credentials=credentials)
     values_api = service.spreadsheets().values()
 
