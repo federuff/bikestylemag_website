@@ -94,7 +94,18 @@ Flusso previsto:
      bozze ancora in corso). Nessuno di questi passaggi va riconfermato ogni volta — sono
      già autorizzati quando arriva il comando "pubblica" dopo la revisione dell'umano nel
      Doc.
-5. Il push su `main` fa partire il deploy automatico.
+5. Il push su `main` fa partire il deploy automatico. Se configurato (vedi sotto), lo stesso
+   push segna anche in automatico la riga di partenza nel News Feed come pubblicata.
+
+**Automazione News Feed → tracker** (opzionale, "dormiente" finché non si configura una
+credenziale): lo script `scripts/update_news_tracker.py`, eseguito da un job dedicato in
+`.github/workflows/deploy-astro.yml` (`update-news-tracker`) ad ogni push su `main`,
+individua gli articoli il cui file è cambiato in quel push, e per quelli con `draft: false`
+e un `sourceUrl` scrive `Pubblicato — <url articolo>` nella colonna "Selezionata per
+articolo" del Google Sheet "Bike Style Mag - News Feed" (riga trovata per corrispondenza
+sull'URL originale). Il job non blocca mai il deploy del sito (`continue-on-error: true`,
+gira in parallelo a `deploy`, non ne dipende) e, senza la credenziale, si limita a loggare
+che il passo è disattivato. Per attivarlo: vedi `STATUS.md`.
 
 Un umano può ovviamente anche scrivere e pubblicare un articolo direttamente, senza passare
 dallo scraper o dal Google Doc: basta creare il file con `draft: false` fin da subito.
