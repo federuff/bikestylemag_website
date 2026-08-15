@@ -46,3 +46,35 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Passo opzionale e "dormiente": segna nel Google Sheet "Bike Style Mag - News Feed"
+  # le notizie appena diventate articoli pubblicati (vedi scripts/update_news_tracker.py
+  # e STATUS.md per come attivarlo). Non blocca mai il deploy: gira in parallelo a
+  # `deploy` (non ne dipende) e ha `continue-on-error` esplicito.
+  update-news-tracker:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Update News Feed tracker for newly published articles
+        env:
+          GOOGLE_SHEETS_CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_JSON }}
+        run: |
+          CHANGED=$(git diff --name-only HEAD^ HEAD -- 'src/content/articles/*.md' 2>/dev/null || true)
+          if [ -z "$CHANGED" ]; then
+            echo "No article files changed in this push — nothing to do."
+            exit 0
+          fi
+          python3 scripts/update_news_tracker.py $CHANGED
