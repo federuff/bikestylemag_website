@@ -10,11 +10,12 @@ const { category } = Astro.props;
 const group = categoryGroup(category);
 ---
 
-<span class:list={['badge', `badge--${group}`, category === 'luxury' && 'badge--luxury']}>{categoryLabel(category)}</span>
+<a href={`/news/${category}`} class:list={['badge', `badge--${group}`, category === 'luxury' && 'badge--luxury']}>{categoryLabel(category)}</a>
 
 <style>
   .badge {
     display: inline-block;
+    text-decoration: none;
     font-family: var(--font-body);
     font-size: 0.75rem;
     font-weight: 600;

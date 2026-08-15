@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { CATEGORY_SLUGS } from '../../content.config';
+import { getArticlesByCategory, categoryLabel } from '../../lib/articles';
+import type { CategorySlug } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  return CATEGORY_SLUGS.map((category) => ({
+    params: { category },
+    props: { category: category as CategorySlug },
+  }));
+}
+
+const { category } = Astro.props;
+const articles = await getArticlesByCategory(category);
+const label = categoryLabel(category);
+---
+
+<BaseLayout
+  title={label}
+  description={`All BikeStyle Mag articles tagged ${label}: design, bicycles and urban mobility.`}
+>
+  <section class="wrapper">
+    <header class="page-header">
+      <p class="eyebrow"><a href="/news">News</a> / {label}</p>
+      <h1>{label}</h1>
+    </header>
+
+    {articles.length > 0 ? (
+      <div class="grid">
+        {articles.map((article) => <ArticleCard article={article} />)}
+      </div>
+    ) : (
+      <p class="empty">No articles in this category yet — check back soon.</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-block: var(--space-6) var(--space-4);
+  }
+
+  .eyebrow {
+    font-size: 0.875rem;
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-1);
+  }
+
+  .eyebrow a {
+    color: inherit;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-4);
+    padding-bottom: var(--space-8);
+  }
+
+  .empty {
+    color: var(--color-ink-muted);
+    padding-bottom: var(--space-8);
+  }
+</style>
